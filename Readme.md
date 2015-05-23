@@ -7,7 +7,7 @@ output: html_document
 
 ### Purpose of the Analysis
 The dataset being examined is the Human Activity Recognition Using Smartphones Dataset.
-This dataset holds data for an experiement where 30 volunteers wore a Samsung smartphone on their waist and their movement, both acceleration and gyroscopic information and performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).
+This dataset data consists of data collected in an experiement where 30 volunteers wore a Samsung smartphone on their waist and their movement, both acceleration and gyroscopic information and performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).
 
 Using its embedded accelerometer and gyroscope, they captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz.  
 

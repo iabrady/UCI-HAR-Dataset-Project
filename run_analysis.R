@@ -1,16 +1,10 @@
-      #'Main analysis function
+      #'Main analysis function the takes the Human Activity Recognition Using 
+      #'Smartphones Dataset.
+      #'This program takes the several datasets associated with this data and
+      #'combines them into a tidy data set while summariseing the data
+      #'as per the commentary below.
       #'
-main <- function() {
-      library(dplyr)
-      library(tidyr)
-      library(readr)
-      read.and.merge()
-      
-}
-
-#------------------------------------------------------------------------------
-
-read.and.merge <- function() {
+run_analysis <- function() {
             #'load required packages
       if (!require("dplyr")) { install.packages("dplyr"); require("dplyr") }
       if (!require("readr")) { install.packages("readr"); require("readr") }
@@ -29,7 +23,7 @@ read.and.merge <- function() {
             #' Test data set files - the vector data, the activity labels & the subjects   
       test.set.file <- 'test/X_test.txt'              # Test set.
       test.labels.file <- 'test/y_test.txt'           # Test labels.
-      test.subject.file <- 'test/subject_test.txt' # training subjects   
+      test.subject.file <- 'test/subject_test.txt'    # training subjects   
       
             #' Get the master data sets holding activity types & variable names
       activity.labels.data <- tbl_df(read.table(activity.labels.file, header=FALSE,
@@ -43,7 +37,7 @@ read.and.merge <- function() {
             #' Use read_table as it handles the white spaced file format 
       training.set.data <- tbl_df(read_table(training.set.file, col_names=FALSE))
       training.labels.data <- tbl_df(read.table(training.labels.file, header=FALSE, 
-                                                sep=" ", stringsAsFactors=FALSE, col.names = "Activity.No"))   
+                                     sep=" ", stringsAsFactors=FALSE, col.names = "Activity.No"))   
       training.subject.data <- tbl_df(read.table(training.subject.file, header=FALSE, 
                                     sep=" ", stringsAsFactors=FALSE, col.names = "Subject")) 
 
@@ -86,5 +80,5 @@ read.and.merge <- function() {
             
             #'write out the tidy data set
       write.table(summ.data.set, file="summary-tidy-data.txt", row.name=FALSE, sep = " ")
-      
+      print("The data has been combined and summarised with the output in summary-tidy-data.txt")
 }

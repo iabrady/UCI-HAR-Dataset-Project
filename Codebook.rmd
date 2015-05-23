@@ -1,0 +1,265 @@
+---
+title: "Codebook for UCI HAR Dataset Tidy Data Output"
+author: "Ingrid Brady"
+date: "Friday, May 22, 2015"
+output: html_document
+---
+
+**The CodeBook  describes the the output file, summary-tidy-data.txt, including its contents, and how it was created.**
+
+The data can be read and viewed by using code such as:
+```{r echo=TRUE, eval=FALSE}
+summary.data <- read.table("summary-tidy-data.txt", sep = " ")
+```
+
+**Background:**
+
+As noted in the Readme.md file: 
+The dataset being examined is the Human Activity Recognition Using Smartphones Dataset.
+This dataset data consists of data collected in an experiement where 30 volunteers wore a Samsung smartphone on their waist and their movement, both acceleration and gyroscopic information and performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING).
+
+Using its embedded accelerometer and gyroscope, they captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz.
+ 
+The dataset information was scattered between many files, rather than one tidy analytic ready file, and difficult to analyse without bringing together. The files provided for analysis were as follows:
+
+     The data in the training and test data sets are not the base collected data, they are already process data using various modelling techniques mentioned in the Readme file that came with the data. The measurements we are dealing with are the result of that modelling work and we are interested in creating a tidy data set that summarises and categorises the means and std deviation measures in the data provided in the test and train data sets. 
+     
+     The data and descriptive information are available the following links:
+ 
+A full description is available at the site where the data was obtained:
+ http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+Here are the data used for the project: 
+ http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
+     
+     ====== Master data for the activity names & row vector columns measurement variable names
+      'activity_labels.txt' - human readable names for the activities
+                              Col 1, Activity Number (Activity.No), Col 2 Activity Name (Activity.Name)
+                              Links the activity label numbers in train/y_train.txt & test/y_test.txt 
+                              
+                              Actvity.Name      The name of the activity. One of WALKING, WALKING_UPSTAIRS, 
+                                                WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING. 
+                              Activity.No       Unique number from 1 to 6 identifying the activity. This 
+                                                key number is used to tag each of the rows of the measurement 
+                                                data, indicating its link to those measures
+                              
+      'features.txt'          Features data set - which are the variables names for the data created and will be the 
+                              the column names of the collected measurement data.
+                              Column 1 - variable names - on for each of the 561 measurments in 
+                              each measurement vector in the dataset. This data file is effectively 
+                              the master reference data for the processed measurement data provided 
+                              - with the variable names (column names), provided, we assumed, in the 
+                              same order as the 561 numeric vector making up each row. 
+                              **** The order is an assumption, as there is no data that states this is 
+                              the case in the documentation****  
+                              
+      ====== Training data set files - the measurement vector data, the activity labels & the subjects
+      They are in individual files and need to be joined together for analysis of the dataset
+      'train/X_train.txt'     Training set - holds the values of the measurement variables
+                              Each row is a 561 long measurements vector that has been created from
+                              the raw data using various modelling & statistical techniques
+      'train/y_train.txt'     Holds the label numbers of the activities, one for each record in X_train.txt
+                              There is one column that holds the Activity.No associated with the activity for
+                              which the measurements relate for each of the measurement rows in the Training set
+                              i.e. 1 number for each row in the set.
+      'train/subject_train.txt' Holds the subject numbers (1-30), one for each record in X_train.txt
+                              There is one column that holds the subject number(an integer from 1 to 30) that
+                              is the subject whose measurements relate to each of the measurement rows 
+                              in the Training set, i.e. 1 number for each row in the set indicating the subject.
+      
+      Once joined they will be of the format:
+      Col 1                   Col 2             Col 3 through Col 563
+      Activity.No             Subject       The 561 numeric vector holding the measurement data
+      
+      
+      ====== Test data set files - the measurement vector data, the activity labels & the subjects   
+      'test/X_test.txt'       Test set - holds the values of the measurement variables. The same information 
+                              as the Training Set applies.
+      'test/y_test.txt'       Holds the label numbers of the activities, one for each record in X_train.txt
+                              The same information as the Training Set applies.
+      'test/subject_test.txt' Holds the subject numbers (1-30), one for each record in X_train.txt.
+                              The same information as the Training Set applies.
+ 
+      Col 1                   Col 2             l 3 through Col 563
+      Activity.No             Subject       The 561 numeric vector holding the measurement data
+      
+      ====== The output file processing & format - summary-tidy-data.txt
+      The following process was used to manipulate the input files to create the tidy data file. 
+      1.    Read all the input files
+      2.    Combine the two data frames of measurement vectors using rbind(). Then we have
+            all the vector data in one data frame. 
+      3.    Set the column names of the new data frame using the data from features.txt.
+            Now we have all the measurements and their variable names as column names.
+      4.    Now find what columns we want to keep - use grep to identify meand & std deviation
+            related columns and subset those
+      5.    Now add the subject(subject_test.txt subject_train.txt) and label data(y_test.txt y_train.txt)
+            to the vector data. First, use rbind on each set to combine the test and training. Thend use
+            cbind to append to the vector data set
+      6.    Now just need to add in the long names of the activities to the growing
+            consolidated data set - use left_joing with activity_labels.txt joined on
+            Activity.No to complete the data set.
+      7.    The remaining dataset was then summarised by Activity Name & Subject and the
+            mean of all columns taken.
+      
+   The following variables remain in the dataset after subsetting. 
+   See original documentation for definitions.
+
+      tBodyAcc-mean()-X
+      
+      tBodyAcc-mean()-Y
+      
+      tBodyAcc-mean()-Z
+      
+      tGravityAcc-mean()-X
+      
+      tGravityAcc-mean()-Y
+      
+      tGravityAcc-mean()-Z
+      
+      tBodyAccJerk-mean()-X
+      
+      tBodyAccJerk-mean()-Y
+      
+      tBodyAccJerk-mean()-Z
+      
+      tBodyGyro-mean()-X
+      
+      tBodyGyro-mean()-Y
+      
+      tBodyGyro-mean()-Z
+      
+      tBodyGyroJerk-mean()-X
+      
+      tBodyGyroJerk-mean()-Y
+      
+      tBodyGyroJerk-mean()-Z
+      
+      tBodyAccMag-mean()
+      
+      tGravityAccMag-mean()
+      
+      tBodyAccJerkMag-mean()
+      
+      tBodyGyroMag-mean()
+      
+      tBodyGyroJerkMag-mean()
+      
+      fBodyAcc-mean()-X
+      
+      fBodyAcc-mean()-Y
+      
+      fBodyAcc-mean()-Z
+      
+      fBodyAcc-meanFreq()-X
+      
+      fBodyAcc-meanFreq()-Y
+      
+      fBodyAcc-meanFreq()-Z
+      
+      fBodyAccJerk-mean()-X
+      
+      fBodyAccJerk-mean()-Y
+      
+      fBodyAccJerk-mean()-Z
+      
+      fBodyAccJerk-meanFreq()-X
+      
+      fBodyAccJerk-meanFreq()-Y
+      
+      fBodyAccJerk-meanFreq()-Z
+      
+      fBodyGyro-mean()-X
+      
+      fBodyGyro-mean()-Y
+      
+      fBodyGyro-mean()-Z
+      
+      fBodyGyro-meanFreq()-X
+      
+      fBodyGyro-meanFreq()-Y
+      
+      fBodyGyro-meanFreq()-Z
+      
+      fBodyAccMag-mean()
+      
+      fBodyAccMag-meanFreq()
+      
+      fBodyBodyAccJerkMag-mean()
+      
+      fBodyBodyAccJerkMag-meanFreq()
+      
+      fBodyBodyGyroMag-mean()
+      
+      fBodyBodyGyroMag-meanFreq()
+      
+      fBodyBodyGyroJerkMag-mean()
+      
+      fBodyBodyGyroJerkMag-meanFreq()
+      
+      tBodyAcc-std()-X
+      
+      tBodyAcc-std()-Y
+      
+      tBodyAcc-std()-Z
+      
+      tGravityAcc-std()-X
+      
+      tGravityAcc-std()-Y
+      
+      tGravityAcc-std()-Z
+      
+      tBodyAccJerk-std()-X
+      
+      tBodyAccJerk-std()-Y
+      
+      tBodyAccJerk-std()-Z
+      
+      tBodyGyro-std()-X
+      
+      tBodyGyro-std()-Y
+      
+      tBodyGyro-std()-Z
+      
+      tBodyGyroJerk-std()-X
+      
+      tBodyGyroJerk-std()-Y
+      
+      tBodyGyroJerk-std()-Z
+      
+      tBodyAccMag-std()
+      
+      tGravityAccMag-std()
+      
+      tBodyAccJerkMag-std()
+      
+      tBodyGyroMag-std()
+      
+      tBodyGyroJerkMag-std()
+      
+      fBodyAcc-std()-X
+      
+      fBodyAcc-std()-Y
+      
+      fBodyAcc-std()-Z
+      
+      fBodyAccJerk-std()-X
+      
+      fBodyAccJerk-std()-Y
+      
+      fBodyAccJerk-std()-Z
+      
+      fBodyGyro-std()-X
+      
+      fBodyGyro-std()-Y
+      
+      fBodyGyro-std()-Z
+      
+      fBodyAccMag-std()
+      
+      fBodyBodyAccJerkMag-std()
+      
+      fBodyBodyGyroMag-std()
+      
+      fBodyBodyGyroJerkMag-std()
+
+
+
